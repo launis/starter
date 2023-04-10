@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../controllers/jobs_del_controller.dart';
 import '/src/constants/strings.dart';
-import '/src/features/jobs/data/jobs_repository.dart';
+import '/src/features/jobs/repositories/jobs_repository.dart';
 import '/src/features/jobs/domain/job.dart';
 import '/src/routing/app_router.dart';
 import '/src/utils/async_value_ui.dart';

@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '/src/features/jobs/data/jobs_repository.dart';
-import '/src/features/jobs/domain/job.dart';
+import '../domain/job.dart';
+import '../repositories/jobs_repository.dart';
 
 part 'jobs_read_controller.g.dart';
 
