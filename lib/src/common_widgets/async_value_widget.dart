@@ -1,7 +1,11 @@
+import 'package:starter/src/common_widgets/error_message_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '/src/common_widgets/error_message_widget.dart';
 
+/// A reusable widget to provide default loading and error widgets when working
+/// with AsyncValue.
+/// More info here:
+/// https://codewithandrea.com/articles/async-value-widget-riverpod/
 class AsyncValueWidget<T> extends StatelessWidget {
   const AsyncValueWidget({super.key, required this.value, required this.data});
   final AsyncValue<T> value;
@@ -17,8 +21,9 @@ class AsyncValueWidget<T> extends StatelessWidget {
   }
 }
 
-class ScaffoldAsyncValueWidget<T> extends StatelessWidget {
-  const ScaffoldAsyncValueWidget(
+/// Sliver equivalent of [AsyncValueWidget]
+class AsyncValueSliverWidget<T> extends StatelessWidget {
+  const AsyncValueSliverWidget(
       {super.key, required this.value, required this.data});
   final AsyncValue<T> value;
   final Widget Function(T) data;
@@ -27,13 +32,10 @@ class ScaffoldAsyncValueWidget<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return value.when(
       data: data,
-      error: (e, st) => Scaffold(
-        appBar: AppBar(),
-        body: Center(child: ErrorMessageWidget(e.toString())),
-      ),
-      loading: () => Scaffold(
-        appBar: AppBar(),
-        body: const Center(child: CircularProgressIndicator()),
+      loading: () => const SliverToBoxAdapter(
+          child: Center(child: CircularProgressIndicator())),
+      error: (e, st) => SliverToBoxAdapter(
+        child: Center(child: ErrorMessageWidget(e.toString())),
       ),
     );
   }

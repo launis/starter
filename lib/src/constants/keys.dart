@@ -9,4 +9,5 @@ class Keys {
   static const String alertDefault = 'alertDefault';
   static const String alertCancel = 'alertCancel';
   static const String jobsPath = 'jobs';
+  static const String id = 'id';
 }

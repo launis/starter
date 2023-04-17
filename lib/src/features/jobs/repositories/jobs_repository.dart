@@ -11,38 +11,37 @@ class JobsRepository {
   JobsRepository(this._firestore);
 
   final FirebaseFirestore _firestore;
-  final CollectionReference _collection =
+  final CollectionReference _ref =
       FirebaseFirestore.instance.collection(Keys.jobsPath);
 
-  static String jobPath(String jobID) => '${Keys.jobsPath}/$jobID';
+  static String jobPath(String id) => '${Keys.jobsPath}/$id';
 
   // create
+  Future<void> addJob({required Job job}) async => await _ref
+      .add(job.toJson())
+      .then((DocumentReference doc) async => await _firestore
+          .doc(jobPath(doc.id))
+          .set({Keys.id: doc.id}, SetOptions(merge: true)));
 
-  Future<void> addJob({
-    required Job job,
-  }) async =>
-      await _collection.add(job.toJson());
-
-  // update
+// update
   Future<void> updateJob({
     required Job job,
-    required JobID id,
   }) async =>
-      await _firestore.doc(jobPath(id)).update(job.toJson());
+      await _firestore.doc(jobPath(job.id)).update(job.toJson());
 
   // delete
   Future<void> deleteJob({
-    required JobID id,
+    required ID id,
   }) async =>
       await _firestore.doc(jobPath(id)).delete();
 
   // read
-  Future<Job?> readJob({required JobID id}) async {
+  Future<Job?> readJob({required ID id}) async {
     final response = await _firestore.doc(jobPath(id)).get();
     return Job.fromJson(response.data()!);
   }
 
-  Query<Job> queryJobs() => _collection.withConverter(
+  Query<Job> queryJobs() => _ref.withConverter(
         fromFirestore: (snapshot, _) => Job.fromJson(snapshot.data()!),
         toFirestore: (job, _) => job.toJson(),
       );

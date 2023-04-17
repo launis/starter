@@ -1,5 +1,6 @@
 // ignore: depend_on_referenced_packages
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:starter/src/routing/app_router.dart';
 import '../domain/job.dart';
 import '../repositories/jobs_repository.dart';
 part 'edit_job_controller.g.dart';
@@ -13,24 +14,23 @@ class EditJobController extends _$EditJobController {
 
   Future<bool> submit({
     Job? oldJob,
-    JobID? jobId,
-    required Job job,
+    required Job newJob,
   }) async {
-    // set loading state
-
-    state = const AsyncValue.loading();
     final repository = ref.read(jobsRepositoryProvider);
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(
+      () => oldJob != null
+          ? repository.updateJob(job: newJob)
+          : repository.addJob(job: newJob),
+    );
+    final success = state.hasError == false;
+    return success;
+  }
 
-    if (oldJob != null) {
-      state = await AsyncValue.guard(
-        () => repository.updateJob(job: job, id: jobId as JobID),
-      );
-    } else {
-      state = await AsyncValue.guard(
-        () => repository.addJob(job: job),
-      );
-    }
-
+  Future<bool> deleteJob({required id}) async {
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(
+        () => ref.read(jobsRepositoryProvider).deleteJob(id: id));
     return state.hasError == false;
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/src/constants/app_sizes.dart';
+import 'package:starter/src/constants/app_sizes.dart';
 
 /// Custom text button with a fixed height
 class CustomTextButton extends StatelessWidget {

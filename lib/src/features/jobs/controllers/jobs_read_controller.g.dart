@@ -7,7 +7,7 @@ part of 'jobs_read_controller.dart';
 // **************************************************************************
 
 String _$jobsReadControllerHash() =>
-    r'2748f8805c1fe9ba67cb28f06b97bba5b293f81c';
+    r'b1e8cabb80d013cee2106d6a3492e0638a4abe5a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -32,10 +32,10 @@ class _SystemHash {
 
 abstract class _$JobsReadController
     extends BuildlessAutoDisposeAsyncNotifier<Job?> {
-  late final String jobId;
+  late final String id;
 
   FutureOr<Job?> build(
-    String jobId,
+    String id,
   );
 }
 
@@ -50,10 +50,10 @@ class JobsReadControllerFamily extends Family<AsyncValue<Job?>> {
 
   /// See also [JobsReadController].
   JobsReadControllerProvider call(
-    String jobId,
+    String id,
   ) {
     return JobsReadControllerProvider(
-      jobId,
+      id,
     );
   }
 
@@ -62,7 +62,7 @@ class JobsReadControllerFamily extends Family<AsyncValue<Job?>> {
     covariant JobsReadControllerProvider provider,
   ) {
     return call(
-      provider.jobId,
+      provider.id,
     );
   }
 
@@ -86,9 +86,9 @@ class JobsReadControllerProvider
     extends AutoDisposeAsyncNotifierProviderImpl<JobsReadController, Job?> {
   /// See also [JobsReadController].
   JobsReadControllerProvider(
-    this.jobId,
+    this.id,
   ) : super.internal(
-          () => JobsReadController()..jobId = jobId,
+          () => JobsReadController()..id = id,
           from: jobsReadControllerProvider,
           name: r'jobsReadControllerProvider',
           debugGetCreateSourceHash:
@@ -100,17 +100,17 @@ class JobsReadControllerProvider
               JobsReadControllerFamily._allTransitiveDependencies,
         );
 
-  final String jobId;
+  final String id;
 
   @override
   bool operator ==(Object other) {
-    return other is JobsReadControllerProvider && other.jobId == jobId;
+    return other is JobsReadControllerProvider && other.id == id;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, jobId.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -120,7 +120,7 @@ class JobsReadControllerProvider
     covariant JobsReadController notifier,
   ) {
     return notifier.build(
-      jobId,
+      id,
     );
   }
 }

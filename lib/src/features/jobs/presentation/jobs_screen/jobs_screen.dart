@@ -2,60 +2,39 @@ import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../controllers/jobs_del_controller.dart';
+import 'package:starter/src/constants/keys.dart';
+import '../../../../common_widgets/action_text_button.dart';
 import '/src/constants/strings.dart';
 import '/src/features/jobs/repositories/jobs_repository.dart';
 import '/src/features/jobs/domain/job.dart';
 import '/src/routing/app_router.dart';
-import '/src/utils/async_value_ui.dart';
 
-class JobsScreen extends StatelessWidget {
+class JobsScreen extends ConsumerWidget {
   const JobsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(Strings.jobs),
         actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add, color: Colors.white),
+          ActionTextButton(
+            text: 'Add',
             onPressed: () => context.goNamed(AppRoute.addJob.name),
           ),
         ],
       ),
-      body: Consumer(
-        builder: (context, ref, child) {
-          ref.listen<AsyncValue>(
-            jobsDelControllerProvider,
-            (_, state) => state.showAlertDialogOnError(context),
-          );
-
-          final jobsQuery = ref.watch(jobsQueryProvider);
-
-          return FirestoreListView<Job>(
-            query: jobsQuery,
-            itemBuilder: (context, doc) {
-              final _job = doc.data();
-              return Dismissible(
-                key: Key('job-${doc.id}'),
-                background: Container(color: Colors.red),
-                direction: DismissDirection.endToStart,
-                onDismissed: (direction) async {
-                  final _success = await ref
-                      .read(jobsDelControllerProvider.notifier)
-                      .deleteJob(jobId: doc.id);
-                },
-                child: JobListTile(
-                  job: _job,
-                  onTap: () => context.goNamed(
-                    AppRoute.job.name,
-                    params: {'id': doc.id},
-                    extra: _job,
-                  ),
-                ),
-              );
-            },
+      body: FirestoreListView<Job>(
+        query: ref.watch(jobsQueryProvider),
+        itemBuilder: (context, snapshot) {
+          Job job = snapshot.data();
+          return JobListTile(
+            job: job,
+            onTap: () => context.goNamed(
+              AppRoute.job.name,
+              //params: {Keys.jobsId: snapshot.id},
+              params: {Keys.id: snapshot.id},
+            ),
           );
         },
       ),

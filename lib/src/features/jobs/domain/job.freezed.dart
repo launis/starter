@@ -20,6 +20,7 @@ Job _$JobFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Job {
+  String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   int get ratePerHour => throw _privateConstructorUsedError;
 
@@ -33,7 +34,7 @@ abstract class $JobCopyWith<$Res> {
   factory $JobCopyWith(Job value, $Res Function(Job) then) =
       _$JobCopyWithImpl<$Res, Job>;
   @useResult
-  $Res call({String name, int ratePerHour});
+  $Res call({String id, String name, int ratePerHour});
 }
 
 /// @nodoc
@@ -48,10 +49,15 @@ class _$JobCopyWithImpl<$Res, $Val extends Job> implements $JobCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? name = null,
     Object? ratePerHour = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -70,7 +76,7 @@ abstract class _$$_JobCopyWith<$Res> implements $JobCopyWith<$Res> {
       __$$_JobCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, int ratePerHour});
+  $Res call({String id, String name, int ratePerHour});
 }
 
 /// @nodoc
@@ -82,10 +88,15 @@ class __$$_JobCopyWithImpl<$Res> extends _$JobCopyWithImpl<$Res, _$_Job>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? name = null,
     Object? ratePerHour = null,
   }) {
     return _then(_$_Job(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -101,10 +112,13 @@ class __$$_JobCopyWithImpl<$Res> extends _$JobCopyWithImpl<$Res, _$_Job>
 /// @nodoc
 @JsonSerializable()
 class _$_Job with DiagnosticableTreeMixin implements _Job {
-  const _$_Job({required this.name, required this.ratePerHour});
+  const _$_Job(
+      {required this.id, required this.name, required this.ratePerHour});
 
   factory _$_Job.fromJson(Map<String, dynamic> json) => _$$_JobFromJson(json);
 
+  @override
+  final String id;
   @override
   final String name;
   @override
@@ -112,7 +126,7 @@ class _$_Job with DiagnosticableTreeMixin implements _Job {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Job(name: $name, ratePerHour: $ratePerHour)';
+    return 'Job(id: $id, name: $name, ratePerHour: $ratePerHour)';
   }
 
   @override
@@ -120,6 +134,7 @@ class _$_Job with DiagnosticableTreeMixin implements _Job {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'Job'))
+      ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('ratePerHour', ratePerHour));
   }
@@ -129,6 +144,7 @@ class _$_Job with DiagnosticableTreeMixin implements _Job {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Job &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.ratePerHour, ratePerHour) ||
                 other.ratePerHour == ratePerHour));
@@ -136,7 +152,7 @@ class _$_Job with DiagnosticableTreeMixin implements _Job {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, ratePerHour);
+  int get hashCode => Object.hash(runtimeType, id, name, ratePerHour);
 
   @JsonKey(ignore: true)
   @override
@@ -154,10 +170,14 @@ class _$_Job with DiagnosticableTreeMixin implements _Job {
 
 abstract class _Job implements Job {
   const factory _Job(
-      {required final String name, required final int ratePerHour}) = _$_Job;
+      {required final String id,
+      required final String name,
+      required final int ratePerHour}) = _$_Job;
 
   factory _Job.fromJson(Map<String, dynamic> json) = _$_Job.fromJson;
 
+  @override
+  String get id;
   @override
   String get name;
   @override

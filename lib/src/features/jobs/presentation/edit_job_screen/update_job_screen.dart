@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:starter/src/common_widgets/action_text_button.dart';
+import 'package:starter/src/routing/app_router.dart';
 
 import '../../controllers/edit_job_controller.dart';
 import '../../domain/job.dart';
 
 class UpdateJobScreen extends ConsumerStatefulWidget {
-  const UpdateJobScreen({super.key, this.jobId, this.job});
-  final JobID? jobId;
+  const UpdateJobScreen({super.key, this.job});
   final Job? job;
 
   @override
@@ -20,12 +21,14 @@ class _UpdateJobPageState extends ConsumerState<UpdateJobScreen> {
   final _formKey = GlobalKey<FormState>();
 
   String? _name;
+  ID? _id;
   int? _ratePerHour;
 
   @override
   void initState() {
     super.initState();
     if (widget.job != null) {
+      _id = widget.job?.id;
       _name = widget.job?.name;
       _ratePerHour = widget.job?.ratePerHour;
     }
@@ -49,39 +52,82 @@ class _UpdateJobPageState extends ConsumerState<UpdateJobScreen> {
         ),
         error: (err, stack) => Text("Error: $err"),
         data: (data) async {
-          final succes = await ref
+          final job = Job(
+              id: _id ?? '',
+              name: _name as String,
+              ratePerHour: _ratePerHour as int);
+          final success = await ref
               .read(editJobControllerProvider.notifier)
-              .submit(
-                  oldJob: widget.job,
-                  jobId: widget.jobId,
-                  job: Job(
-                      name: _name as String, ratePerHour: _ratePerHour as int));
-          if (context.mounted && succes) {
+              .submit(oldJob: widget.job, newJob: job);
+          if (context.mounted && success) {
             context.pop();
           }
+          //         if (success) {
+          //           // on success, go back to previous screen
+          //           ref.read(goRouterProvider).pop();
+//          }
         },
       );
     }
   }
 
+  Future<void> _delete() async {
+    final asyncJob = ref.watch(editJobControllerProvider);
+    return asyncJob.when(
+      loading: () => const Center(
+        child: CircularProgressIndicator(),
+      ),
+      error: (err, stack) => Text("Error: $err"),
+      data: (data) async {
+        final success =
+            await ref.read(editJobControllerProvider.notifier).deleteJob(
+                  id: _id,
+                );
+        if (context.mounted && success) {
+          context.pop();
+        }
+//        if (success) {
+//          // on success, go back to previous screen
+//          ref.read(goRouterProvider).pop();
+//        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(editJobControllerProvider);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.job == null ? 'New Job' : 'Edit Job'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: state.isLoading ? null : _submit,
-            child: const Text(
-              'Save',
-              style: TextStyle(fontSize: 18, color: Colors.white),
+    if (widget.job != null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Edit Job'),
+          actions: <Widget>[
+            ActionTextButton(
+              text: 'Save',
+              onPressed: state.isLoading ? null : _submit,
             ),
-          ),
-        ],
-      ),
-      body: _buildContents(),
-    );
+            ActionTextButton(
+              text: 'Delete',
+              onPressed: state.isLoading ? null : _delete,
+            ),
+          ],
+        ),
+        body: _buildContents(),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('New Job'),
+          actions: <Widget>[
+            ActionTextButton(
+              text: 'Save',
+              onPressed: state.isLoading ? null : _submit,
+            ),
+          ],
+        ),
+        body: _buildContents(),
+      );
+    }
   }
 
   Widget _buildContents() {

@@ -7,10 +7,10 @@ part 'jobs_read_controller.g.dart';
 @riverpod
 class JobsReadController extends _$JobsReadController {
   @override
-  FutureOr<Job?> build(JobID jobId) async {
+  FutureOr<Job?> build(ID id) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(
-        () => ref.read(jobsRepositoryProvider).readJob(id: jobId));
+        () => ref.read(jobsRepositoryProvider).readJob(id: id));
     return state.value;
   }
 }

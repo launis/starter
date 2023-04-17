@@ -1,7 +1,7 @@
+import 'package:starter/src/constants/breakpoints.dart';
 import 'package:flutter/material.dart';
-import '/src/common_widgets/responsive_center.dart';
-import '/src/constants/app_sizes.dart';
-import '/src/constants/breakpoints.dart';
+import 'package:starter/src/common_widgets/responsive_center.dart';
+import 'package:starter/src/constants/app_sizes.dart';
 
 /// Scrollable widget that shows a responsive card with a given child widget.
 /// Useful for displaying forms and other widgets that need to be scrollable.

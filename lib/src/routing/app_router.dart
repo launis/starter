@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:starter/src/constants/keys.dart';
 
 import '../features/authentication/repositories/auth_repository.dart';
 import '../features/jobs/presentation/edit_job_screen/update_job_screen.dart';
@@ -9,8 +10,9 @@ import '/src/features/authentication/presentation/custom_sign_in_screen.dart';
 import '/src/features/jobs/domain/job.dart';
 import '/src/features/jobs/presentation/edit_job_screen/edit_job_screen.dart';
 import '/src/features/jobs/presentation/jobs_screen/jobs_screen.dart';
-import '/src/routing/go_router_refresh_stream.dart';
+
 import '/src/routing/scaffold_with_bottom_nav_bar.dart';
+import 'go_router_refresh_stream.dart';
 part 'app_router.g.dart';
 
 // private navigators
@@ -82,13 +84,13 @@ GoRouter goRouter(GoRouterRef ref) {
                 },
               ),
               GoRoute(
-                path: ':id',
+                path: ':${Keys.id}',
                 name: AppRoute.job.name,
                 pageBuilder: (context, state) {
-                  final JobID jobId = state.params['id']!;
+                  final ID id = state.params[Keys.id]!;
                   return MaterialPage(
                     key: state.pageKey,
-                    child: EditJobScreen(jobId: jobId),
+                    child: EditJobScreen(id: id),
                   );
                 },
               ),

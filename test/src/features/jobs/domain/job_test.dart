@@ -8,7 +8,7 @@ void main() {
         'name': 'Blogging',
         'ratePerHour': 10,
       });
-      expect(job, const Job(name: 'Blogging', ratePerHour: 10));
+      expect(job, Job(name: 'Blogging', ratePerHour: 10, id: ''));
     });
 
     test('missing name', () {
@@ -22,7 +22,7 @@ void main() {
 
   group('toMap', () {
     test('valid name, ratePerHour', () {
-      const job = Job(name: 'Blogging', ratePerHour: 10);
+      const job = Job(name: 'Blogging', ratePerHour: 10, id: '');
       expect(job.toJson(), {
         'name': 'Blogging',
         'ratePerHour': 10,
@@ -32,13 +32,13 @@ void main() {
 
   group('equality', () {
     test('different properties, equality returns false', () {
-      const job1 = Job(name: 'Blogging', ratePerHour: 10);
-      const job2 = Job(name: 'Blogging', ratePerHour: 5);
+      const job1 = Job(name: 'Blogging', ratePerHour: 10, id: '');
+      const job2 = Job(name: 'Blogging', ratePerHour: 5, id: '');
       expect(job1 == job2, false);
     });
     test('same properties, equality returns true', () {
-      const job1 = Job(name: 'Blogging', ratePerHour: 10);
-      const job2 = Job(name: 'Blogging', ratePerHour: 10);
+      const job1 = Job(name: 'Blogging', ratePerHour: 10, id: '');
+      const job2 = Job(name: 'Blogging', ratePerHour: 10, id: '');
       expect(job1 == job2, true);
     });
   });
