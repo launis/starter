@@ -24,6 +24,7 @@ enum AppRoute {
   jobs,
   job,
   addJob,
+  editJob,
   profile,
 }
 
@@ -84,7 +85,7 @@ GoRouter goRouter(GoRouterRef ref) {
                 },
               ),
               GoRoute(
-                path: ':${Keys.id}',
+                path: 'job/:${Keys.id}',
                 name: AppRoute.job.name,
                 pageBuilder: (context, state) {
                   final ID id = state.params[Keys.id]!;

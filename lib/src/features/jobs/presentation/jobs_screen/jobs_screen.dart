@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:starter/src/common_widgets/error_message_widget.dart';
 import 'package:starter/src/constants/keys.dart';
 import '../../../../common_widgets/action_text_button.dart';
 import '/src/constants/strings.dart';
@@ -14,6 +16,7 @@ class JobsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final query = ref.watch(jobsQueryProvider).orderBy('name');
     return Scaffold(
       appBar: AppBar(
         title: const Text(Strings.jobs),
@@ -25,14 +28,17 @@ class JobsScreen extends ConsumerWidget {
         ],
       ),
       body: FirestoreListView<Job>(
-        query: ref.watch(jobsQueryProvider),
+        emptyBuilder: (context) => const ErrorMessageWidget('No data'),
+        errorBuilder: (context, error, stackTrace) =>
+            ErrorMessageWidget(error.toString()),
+        loadingBuilder: (context) => const CircularProgressIndicator(),
+        query: query,
         itemBuilder: (context, snapshot) {
           Job job = snapshot.data();
           return JobListTile(
             job: job,
             onTap: () => context.goNamed(
               AppRoute.job.name,
-              //params: {Keys.jobsId: snapshot.id},
               params: {Keys.id: snapshot.id},
             ),
           );

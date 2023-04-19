@@ -23,8 +23,7 @@ class EditJobController extends _$EditJobController {
           ? repository.updateJob(job: newJob)
           : repository.addJob(job: newJob),
     );
-    final success = state.hasError == false;
-    return success;
+    return state.hasError == false;
   }
 
   Future<bool> deleteJob({required id}) async {
