@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/src/routing/app_router.dart';
+import 'routing/adaptive_router.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final goRouter = ref.watch(goRouterProvider);
+    final goRouter = ref.watch(goRouteProvider);
     return MaterialApp.router(
       routerConfig: goRouter,
       theme: ThemeData(

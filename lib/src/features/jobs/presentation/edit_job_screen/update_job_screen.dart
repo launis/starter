@@ -82,10 +82,6 @@ class _UpdateJobPageState extends ConsumerState<UpdateJobScreen> {
         if (context.mounted && success) {
           context.pop();
         }
-//        if (success) {
-//          // on success, go back to previous screen
-//          ref.read(goRouterProvider).pop();
-//        }
       },
     );
   }

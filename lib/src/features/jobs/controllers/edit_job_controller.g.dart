@@ -6,7 +6,7 @@ part of 'edit_job_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$editJobControllerHash() => r'7b7b1acf2bfcd95e8ec567d428489c0363f40c71';
+String _$editJobControllerHash() => r'1c40f1bbba72c83132e1fafa802879bf2a70c40f';
 
 /// See also [EditJobController].
 @ProviderFor(EditJobController)

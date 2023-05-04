@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:starter/src/common_widgets/error_message_widget.dart';
 import 'package:starter/src/constants/keys.dart';
 import '../../../../common_widgets/action_text_button.dart';
+import '../../../../routing/adaptive_router.dart';
 import '/src/constants/strings.dart';
 import '/src/features/jobs/repositories/jobs_repository.dart';
 import '/src/features/jobs/domain/job.dart';
@@ -37,10 +38,7 @@ class JobsScreen extends ConsumerWidget {
           Job job = snapshot.data();
           return JobListTile(
             job: job,
-            onTap: () => context.goNamed(
-              AppRoute.job.name,
-              params: {Keys.id: snapshot.id},
-            ),
+            onTap: () => JobPageRoute(id: snapshot.id).go(context),
           );
         },
       ),
