@@ -2,7 +2,6 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:starter/src/routing/app_router.dart';
 import '../../../routing/adaptive_router.dart';
 import '../controllers/auth_providers.dart';
 
@@ -16,7 +15,7 @@ class CustomProfileScreen extends ConsumerWidget {
       providers: authProviders,
       actions: [
         SignedOutAction((context) {
-          context.go(SignInPageRoute.path);
+          context.pushReplacement(SignInPageRoute.path);
         }),
       ],
     );

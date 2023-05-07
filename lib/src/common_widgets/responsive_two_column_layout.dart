@@ -1,5 +1,6 @@
-import 'package:starter/src/constants/breakpoints.dart';
 import 'package:flutter/material.dart';
+
+import '../constants/breakpoints.dart';
 
 /// Responsive layout that shows two child widgets side by side if there is
 /// enough space, or vertically stacked if there is not enough space.

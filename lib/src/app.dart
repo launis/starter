@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '/src/routing/app_router.dart';
 import 'routing/adaptive_router.dart';
 
 class MyApp extends ConsumerWidget {

@@ -8,7 +8,7 @@ void main() {
         'name': 'Blogging',
         'ratePerHour': 10,
       });
-      expect(job, Job(name: 'Blogging', ratePerHour: 10, id: ''));
+      expect(job, const Job(name: 'Blogging', ratePerHour: 10, id: ''));
     });
 
     test('missing name', () {

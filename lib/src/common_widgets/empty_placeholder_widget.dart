@@ -1,9 +1,9 @@
-import 'package:starter/src/localization/string_hardcoded.dart';
-import 'package:starter/src/routing/app_router.dart';
 import 'package:flutter/material.dart';
-import 'package:starter/src/common_widgets/primary_button.dart';
-import 'package:starter/src/constants/app_sizes.dart';
 import 'package:go_router/go_router.dart';
+
+import '../constants/app_sizes.dart';
+import '../routing/adaptive_router.dart';
+import 'primary_button.dart';
 
 /// Placeholder widget showing a message and CTA to go back to the home screen.
 class EmptyPlaceholderWidget extends StatelessWidget {
@@ -26,8 +26,8 @@ class EmptyPlaceholderWidget extends StatelessWidget {
             ),
             gapH32,
             PrimaryButton(
-              onPressed: () => context.goNamed(AppRoute.signIn.name),
-              text: 'Go Home'.hardcoded,
+              onPressed: () => context.go(ProfilePageRoute.path),
+              text: 'Go Home',
             )
           ],
         ),

@@ -1,9 +1,6 @@
-/// AsyncNotifier example (with codegen)
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../repositories/auth_repository.dart';
-
 part 'auth_controller.g.dart';
 
 @riverpod

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:starter/src/localization/string_hardcoded.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -69,11 +68,11 @@ Future<void> showExceptionAlertDialog({
       context: context,
       title: title,
       content: exception.toString(),
-      defaultActionText: 'OK'.hardcoded,
+      defaultActionText: 'OK',
     );
 
 Future<void> showNotImplementedAlertDialog({required BuildContext context}) =>
     showAlertDialog(
       context: context,
-      title: 'Not implemented'.hardcoded,
+      title: 'Not implemented',
     );

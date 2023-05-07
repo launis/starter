@@ -1,18 +1,15 @@
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:starter/src/common_widgets/empty_content.dart';
-import 'package:starter/src/features/jobs/presentation/jobs_screen/jobs_screen.dart';
 
-import '../constants/keys.dart';
 import '../features/authentication/presentation/custom_profile_screen.dart';
 import '../features/authentication/presentation/custom_sign_in_screen.dart';
 import '../features/authentication/repositories/auth_repository.dart';
 import '../features/jobs/presentation/edit_job_screen/edit_job_screen.dart';
 import '../features/jobs/presentation/edit_job_screen/update_job_screen.dart';
+import '../features/jobs/presentation/jobs_screen/jobs_screen.dart';
 import 'go_router_refresh_stream.dart';
 import 'not_found_screen.dart';
 
@@ -33,14 +30,9 @@ GoRouter goRoute(GoRouteRef ref) {
     errorBuilder: (context, state) =>
         const ErrorPageRoute().build(context, state),
     debugLogDiagnostics: true,
+    refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges()),
     initialLocation: init(authRepository),
-    redirect: (context, state) {
-      if (authRepository.currentUser == null &&
-          !state.subloc.startsWith('/forgot-password')) {
-        return '/signin';
-      }
-      return state.subloc;
-    },
+    redirect: (context, state) => redirect(authRepository, state),
   );
 }
 
@@ -160,12 +152,12 @@ class VerifyEmailPageRoute extends GoRouteData {
     return EmailVerificationScreen(
       actions: [
         EmailVerifiedAction(
-          () => context.goNamed(JobsPageRoute.path),
+          () => context.pushReplacement(JobsPageRoute.path),
         ),
         AuthCancelledAction(
           (context) {
             FirebaseUIAuth.signOut(context: context);
-            context.pushNamed(SignInPageRoute.path);
+            context.pushReplacement(SignInPageRoute.path);
           },
         ),
       ],
@@ -174,16 +166,19 @@ class VerifyEmailPageRoute extends GoRouteData {
 }
 
 class ForgotPasswordPageRoute extends GoRouteData {
-  const ForgotPasswordPageRoute({this.email});
-  final String? email;
+  final String email;
+
+  const ForgotPasswordPageRoute({
+    required this.email,
+  });
+
   static const path = '/forgot-password/:email';
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return ForgotPasswordScreen(
-      email: state.params['email']!,
-    );
-  }
+  Widget build(BuildContext context, GoRouterState state) =>
+      ForgotPasswordScreen(
+        email: email.toString(),
+      );
 }
 
 class ProfilePageRoute extends GoRouteData {
@@ -192,9 +187,8 @@ class ProfilePageRoute extends GoRouteData {
   static const path = '/profile';
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const CustomProfileScreen();
-  }
+  Widget build(BuildContext context, GoRouterState state) =>
+      const CustomProfileScreen();
 }
 
 class JobsPageRoute extends GoRouteData {
@@ -203,10 +197,7 @@ class JobsPageRoute extends GoRouteData {
   static const path = '/jobs';
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    print(1);
-    return const JobsScreen();
-  }
+  Widget build(BuildContext context, GoRouterState state) => const JobsScreen();
 }
 
 class ErrorPageRoute extends GoRouteData {
@@ -215,9 +206,8 @@ class ErrorPageRoute extends GoRouteData {
   static const path = '/error';
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const NotFoundScreen();
-  }
+  Widget build(BuildContext context, GoRouterState state) =>
+      const NotFoundScreen();
 }
 
 class AddJobPageRoute extends GoRouteData {
@@ -226,21 +216,22 @@ class AddJobPageRoute extends GoRouteData {
   static const path = 'add';
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const UpdateJobScreen();
-  }
+  Widget build(BuildContext context, GoRouterState state) =>
+      const UpdateJobScreen();
 }
 
 class JobPageRoute extends GoRouteData {
-  const JobPageRoute({this.id});
-  final String? id;
+  final String id;
+
+  const JobPageRoute({
+    required this.id,
+  });
 
   static const path = 'job/:id';
 
   @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return EditJobScreen(id: state.params['id']!);
-  }
+  Widget build(BuildContext context, GoRouterState state) =>
+      EditJobScreen(id: id.toString());
 }
 
 init(authRepository) {
@@ -253,4 +244,12 @@ init(authRepository) {
     return '/verify-email';
   }
   return '/jobs';
+}
+
+redirect(authRepository, GoRouterState state) {
+  if (authRepository.currentUser == null &&
+      !state.matchedLocation.startsWith('/forgot-password')) {
+    return '/signin';
+  }
+  return null;
 }

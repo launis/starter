@@ -106,14 +106,11 @@ extension $ErrorPageRouteExtension on ErrorPageRoute {
 extension $ForgotPasswordPageRouteExtension on ForgotPasswordPageRoute {
   static ForgotPasswordPageRoute _fromState(GoRouterState state) =>
       ForgotPasswordPageRoute(
-        email: state.params['email'],
+        email: state.pathParameters['email']!,
       );
 
   String get location => GoRouteData.$location(
-        '/forgot-password/${Uri.encodeComponent(email!)}',
-        queryParams: {
-          if (email != null) 'email': email,
-        },
+        '/forgot-password/${Uri.encodeComponent(email)}',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -173,14 +170,11 @@ extension $AddJobPageRouteExtension on AddJobPageRoute {
 
 extension $JobPageRouteExtension on JobPageRoute {
   static JobPageRoute _fromState(GoRouterState state) => JobPageRoute(
-        id: state.params['id'],
+        id: state.pathParameters['id']!,
       );
 
   String get location => GoRouteData.$location(
-        '/jobs/job/${Uri.encodeComponent(id!)}',
-        queryParams: {
-          if (id != null) 'id': id,
-        },
+        '/jobs/job/${Uri.encodeComponent(id)}',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -195,7 +189,7 @@ extension $JobPageRouteExtension on JobPageRoute {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$goRouteHash() => r'a0ffb3983426bd42dfbd0bb82343190066d0609d';
+String _$goRouteHash() => r'85cde4a5ba7607af4c8e2786cf4f46596b0b4ad1';
 
 /// See also [goRoute].
 @ProviderFor(goRoute)
