@@ -27,20 +27,20 @@ class CustomSignInScreen extends ConsumerWidget {
                         : email == ''
                             ? 'email@email'
                             : email)
-                .go(context),
+                .push(context),
           ),
           AuthStateChangeAction<SignedIn>((context, state) =>
               state.user!.emailVerified
-                  ? context.go(JobsPageRoute.path)
-                  : context.go(VerifyEmailPageRoute.path)),
+                  ? context.push(JobsPageRoute.path)
+                  : context.pushReplacement(VerifyEmailPageRoute.path)),
           AuthStateChangeAction<UserCreated>((context, state) =>
               state.credential.user!.emailVerified
-                  ? context.go(JobsPageRoute.path)
-                  : context.go(VerifyEmailPageRoute.path)),
+                  ? context.push(JobsPageRoute.path)
+                  : context.pushReplacement(VerifyEmailPageRoute.path)),
           AuthStateChangeAction<CredentialLinked>((context, state) =>
               state.user.emailVerified
-                  ? context.go(JobsPageRoute.path)
-                  : context.go(VerifyEmailPageRoute.path)),
+                  ? context.push(JobsPageRoute.path)
+                  : context.pushReplacement(VerifyEmailPageRoute.path)),
         ],
       ),
     );

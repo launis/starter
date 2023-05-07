@@ -10,7 +10,6 @@ import '../features/authentication/repositories/auth_repository.dart';
 import '../features/jobs/presentation/edit_job_screen/edit_job_screen.dart';
 import '../features/jobs/presentation/edit_job_screen/update_job_screen.dart';
 import '../features/jobs/presentation/jobs_screen/jobs_screen.dart';
-import 'go_router_refresh_stream.dart';
 import 'not_found_screen.dart';
 
 part 'adaptive_router.g.dart';
@@ -30,7 +29,6 @@ GoRouter goRoute(GoRouteRef ref) {
     errorBuilder: (context, state) =>
         const ErrorPageRoute().build(context, state),
     debugLogDiagnostics: true,
-    refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges()),
     initialLocation: init(authRepository),
     redirect: (context, state) => redirect(authRepository, state),
   );
@@ -236,20 +234,20 @@ class JobPageRoute extends GoRouteData {
 
 init(authRepository) {
   if (authRepository.currentUser == null) {
-    return '/signin';
+    return SignInPageRoute.path;
   }
 
   if (!authRepository.currentUser!.emailVerified &&
       authRepository.currentUser!.email != null) {
-    return '/verify-email';
+    return VerifyEmailPageRoute.path;
   }
-  return '/jobs';
+  return JobPageRoute.path;
 }
 
 redirect(authRepository, GoRouterState state) {
   if (authRepository.currentUser == null &&
       !state.matchedLocation.startsWith('/forgot-password')) {
-    return '/signin';
+    return SignInPageRoute.path;
   }
   return null;
 }
