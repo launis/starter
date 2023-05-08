@@ -189,7 +189,7 @@ extension $JobPageRouteExtension on JobPageRoute {
 // RiverpodGenerator
 // **************************************************************************
 
-String _$goRouteHash() => r'85cde4a5ba7607af4c8e2786cf4f46596b0b4ad1';
+String _$goRouteHash() => r'edadacdffcf7292b8532ee75ec172c4df03ae53f';
 
 /// See also [goRoute].
 @ProviderFor(goRoute)

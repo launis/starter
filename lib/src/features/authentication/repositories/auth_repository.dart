@@ -9,14 +9,6 @@ class AuthRepository {
 
   Stream<User?> authStateChanges() => _auth.authStateChanges();
   User? get currentUser => _auth.currentUser;
-
-  Future<void> signInAnonymously() {
-    return _auth.signInAnonymously();
-  }
-
-  Future<void> signOut() async {
-    await Future.delayed(const Duration(seconds: 1));
-  }
 }
 
 @Riverpod(keepAlive: true)

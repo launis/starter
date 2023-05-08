@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_adaptive_scaffold/flutter_adaptive_scaffold.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 
-import '../features/authentication/presentation/custom_profile_screen.dart';
 import '../features/authentication/presentation/custom_sign_in_screen.dart';
 import '../features/authentication/repositories/auth_repository.dart';
 import '../features/jobs/presentation/edit_job_screen/edit_job_screen.dart';
@@ -22,15 +22,24 @@ final shellNavigatorKey =
 
 @riverpod
 GoRouter goRoute(GoRouteRef ref) {
-  final authRepository = ref.watch(authRepositoryProvider);
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     routes: $appRoutes,
     errorBuilder: (context, state) =>
         const ErrorPageRoute().build(context, state),
     debugLogDiagnostics: true,
-    initialLocation: init(authRepository),
-    redirect: (context, state) => redirect(authRepository, state),
+    redirect: (context, state) {
+      final User? currentUser = ref.watch(authRepositoryProvider).currentUser;
+      if (!state.matchedLocation.startsWith('/forgot-password')) {
+        if (currentUser == null) {
+          return SignInPageRoute.path;
+        }
+        if (!currentUser.emailVerified && currentUser.email != null) {
+          return VerifyEmailPageRoute.path;
+        }
+      }
+      return null;
+    },
   );
 }
 
@@ -185,8 +194,14 @@ class ProfilePageRoute extends GoRouteData {
   static const path = '/profile';
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const CustomProfileScreen();
+  Widget build(BuildContext context, GoRouterState state) => ProfileScreen(
+        providers: [EmailAuthProvider()],
+        actions: [
+          SignedOutAction((context) {
+            context.pushReplacement(SignInPageRoute.path);
+          }),
+        ],
+      );
 }
 
 class JobsPageRoute extends GoRouteData {
@@ -230,24 +245,4 @@ class JobPageRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       EditJobScreen(id: id.toString());
-}
-
-init(authRepository) {
-  if (authRepository.currentUser == null) {
-    return SignInPageRoute.path;
-  }
-
-  if (!authRepository.currentUser!.emailVerified &&
-      authRepository.currentUser!.email != null) {
-    return VerifyEmailPageRoute.path;
-  }
-  return JobPageRoute.path;
-}
-
-redirect(authRepository, GoRouterState state) {
-  if (authRepository.currentUser == null &&
-      !state.matchedLocation.startsWith('/forgot-password')) {
-    return SignInPageRoute.path;
-  }
-  return null;
 }
