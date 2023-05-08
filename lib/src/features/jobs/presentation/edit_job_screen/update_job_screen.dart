@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../common_widgets/action_text_button.dart';
+import '../../../../routing/adaptive_router.dart';
 import '../../controllers/edit_job_controller.dart';
 import '../../domain/job.dart';
 
@@ -59,7 +60,7 @@ class _UpdateJobPageState extends ConsumerState<UpdateJobScreen> {
               .read(editJobControllerProvider.notifier)
               .submit(oldJob: widget.job, newJob: job);
           if (context.mounted && success) {
-            context.pop();
+            context.push(JobsPageRoute.path);
           }
         },
       );
@@ -79,7 +80,7 @@ class _UpdateJobPageState extends ConsumerState<UpdateJobScreen> {
                   id: _id,
                 );
         if (context.mounted && success) {
-          context.pop();
+          context.replace(JobsPageRoute.path);
         }
       },
     );

@@ -15,13 +15,14 @@ class JobsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final query = ref.watch(jobsQueryProvider).orderBy('name');
+    const String addroute = '${JobsPageRoute.path}/${AddJobPageRoute.path}';
     return Scaffold(
       appBar: AppBar(
         title: const Text(Strings.jobs),
         actions: <Widget>[
           ActionTextButton(
             text: 'Add',
-            onPressed: () => context.go(AddJobPageRoute.path),
+            onPressed: () => context.push(addroute),
           ),
         ],
       ),
@@ -36,7 +37,7 @@ class JobsScreen extends ConsumerWidget {
           return JobListTile(
               job: job,
               onTap: () =>
-                  JobPageRoute(id: snapshot.id.toString()).go(context));
+                  JobPageRoute(id: snapshot.id.toString()).push(context));
         },
       ),
     );

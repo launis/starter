@@ -129,10 +129,10 @@ class RootPageRoute extends ShellRouteData {
   void indexToGo(int index, BuildContext context) {
     switch (index) {
       case 0:
-        context.go(ProfilePageRoute.path);
+        context.push(ProfilePageRoute.path);
         break;
       case 1:
-        context.go(JobsPageRoute.path);
+        context.push(JobsPageRoute.path);
         break;
     }
   }
